@@ -33,8 +33,9 @@ public class Gallery extends BaseEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
 
-//    @OneToMany
-//    private List<String> galleryImages = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "gallery_id")
+    private List<GalleryImage> galleryImages = new ArrayList<>();
 
     @Builder
     public Gallery(int galleryId, String title, String contents, Date date) {
