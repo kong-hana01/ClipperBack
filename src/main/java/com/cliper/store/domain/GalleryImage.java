@@ -23,13 +23,13 @@ public class GalleryImage {
     private Image image;
 
     @Column(name = "gallery_id")
-    private int gallery_id;
+    private int galleryId;
 
     @Builder
-    public GalleryImage(int galleryImageId, Image image, int gallery_id) {
+    public GalleryImage(int galleryImageId, Image image, int galleryId) {
         this.galleryImageId = galleryImageId;
         this.image = image;
-        this.gallery_id = gallery_id;
+        this.galleryId = galleryId;
     }
 
     public GalleryImageDto toDto() {
@@ -38,7 +38,7 @@ public class GalleryImage {
                 .imageId(image.getImageId())
                 .fileName(image.getFileName())
                 .isThumbnail(image.isThumbnail())
-                .gallery_id(gallery_id)
+                .gallery_id(galleryId)
                 .build();
     }
 }
