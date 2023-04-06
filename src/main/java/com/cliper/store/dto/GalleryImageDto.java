@@ -1,8 +1,12 @@
 package com.cliper.store.dto;
 
-import lombok.Builder;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 public class GalleryImageDto {
 
     private int galleryImageId;
@@ -12,7 +16,7 @@ public class GalleryImageDto {
     private boolean isThumbnail;
 
     @Value("${imagePath}")
-    private static String filePath;
+    private String filePath;
 
     @Builder
     public GalleryImageDto(int galleryImageId, int gallery_id, int imageId, String fileName, boolean isThumbnail) {
