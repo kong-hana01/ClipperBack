@@ -1,6 +1,6 @@
 package com.cliper.store.domain;
 
-import com.cliper.store.dto.GalleryImageDto;
+import com.cliper.store.dto.GalleryPortfolioImageDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -30,5 +30,15 @@ public class PortfolioImage {
         this.portfolioImageId = portfolioImageId;
         this.image = image;
         this.portfolioId = portfolioId;
+    }
+
+    public GalleryPortfolioImageDto toDto() {
+        return GalleryPortfolioImageDto.builder()
+                .galleryImageId(portfolioImageId)
+                .imageId(image.getImageId())
+                .fileName(image.getFileName())
+                .isThumbnail(image.isThumbnail())
+                .gallery_id(portfolioId)
+                .build();
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Setter
 @ToString
 @NoArgsConstructor
-public class GalleryImageDto {
+public class GalleryPortfolioImageDto {
 
     private int galleryImageId;
     private int gallery_id;
@@ -19,7 +19,7 @@ public class GalleryImageDto {
     private String filePath;
 
     @Builder
-    public GalleryImageDto(int galleryImageId, int gallery_id, int imageId, String fileName, boolean isThumbnail) {
+    public GalleryPortfolioImageDto(int galleryImageId, int gallery_id, int imageId, String fileName, boolean isThumbnail) {
         this.galleryImageId = galleryImageId;
         this.gallery_id = gallery_id;
         this.imageId = imageId;
