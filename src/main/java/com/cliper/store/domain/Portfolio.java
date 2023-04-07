@@ -1,6 +1,6 @@
 package com.cliper.store.domain;
 
-import com.cliper.store.dto.ClipperBoardDto;
+import com.cliper.store.dto.GalleryDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +26,9 @@ public class Portfolio extends BaseEntity {
     @Column(name = "portfolio_category")
     private String portfolioCategory;
 
+    @Column(name = "agency")
+    private String agency;
+
     @Column(name = "contents")
     private String contents;
 
@@ -34,24 +37,25 @@ public class Portfolio extends BaseEntity {
     private Date date;
 
     @OneToMany
-    @JoinColumn(name = "gallery_id")
-    private List<GalleryImage> galleryImages = new ArrayList<>();
+    @JoinColumn(name = "portfolio_id")
+    private List<PortfolioImage> portfolioImages = new ArrayList<>();
 
     @Builder
-    public Portfolio(int portfolioId, String portfolioCategory, String contents, Date date) {
+    public Portfolio(int portfolioId, String portfolioCategory, String agency, String contents, Date date) {
         this.portfolioId = portfolioId;
         this.portfolioCategory = portfolioCategory;
+        this.agency = agency;
         this.contents = contents;
         this.date = date;
     }
 
-    public ClipperBoardDto toDto() {
-        return ClipperBoardDto.builder()
+    public GalleryDto toDto() {
+        return GalleryDto.builder()
                 .galleryId(portfolioId)
                 .title(portfolioCategory)
                 .contents(contents)
                 .date(date)
-                .galleryImages(galleryImages)
+                .galleryImages(portfolioImages)
                 .build();
     }
 }
