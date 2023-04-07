@@ -54,6 +54,7 @@ public class Portfolio extends BaseEntity {
         return PortfolioDto.builder()
                 .portfolioId(portfolioId)
                 .portfolioCategory(portfolioCategory)
+                .agency(agency)
                 .contents(contents)
                 .date(date)
                 .portfolioImages(portfolioImages)
