@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert
-public class GalleryImage {
+public class GalleryImage implements ClipperImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
