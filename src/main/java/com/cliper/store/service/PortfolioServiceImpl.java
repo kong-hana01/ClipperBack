@@ -1,6 +1,7 @@
 package com.cliper.store.service;
 
 import com.cliper.store.domain.Gallery;
+import com.cliper.store.domain.Portfolio;
 import com.cliper.store.dto.ClipperBoardDto;
 import com.cliper.store.repository.PortfolioRepository;
 import com.cliper.store.response.ExceptionCode;
@@ -23,11 +24,10 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public Object getPortfolio() {
-        List<Gallery> galleries = portfolioRepository.findAll();
-        List<ClipperBoardDto> clipperBoardDtos = galleries.stream()
-                .map(Gallery::toDto)
+        List<Portfolio> portfolios = portfolioRepository.findAll();
+        List<ClipperBoardDto> clipperBoardDtos = portfolios.stream()
+                .map(Portfolio::toDto)
                 .collect(Collectors.toList());
-        System.out.println(clipperBoardDtos);
         return new Response(ExceptionCode.BOARD_GET_OK, clipperBoardDtos);
     }
 }

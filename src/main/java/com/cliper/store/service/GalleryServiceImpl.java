@@ -27,7 +27,6 @@ public class GalleryServiceImpl implements GalleryService {
         List<ClipperBoardDto> clipperBoardDtos = galleries.stream()
                 .map(Gallery::toDto)
                 .collect(Collectors.toList());
-        System.out.println(clipperBoardDtos);
         return new Response(ExceptionCode.BOARD_GET_OK, clipperBoardDtos);
     }
 }
