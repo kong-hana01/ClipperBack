@@ -1,8 +1,7 @@
 package com.cliper.store.controller;
 
-import com.cliper.store.repository.GalleryRepository;
 import com.cliper.store.service.GalleryService;
-import com.cliper.store.service.GalleryServiceImpl;
+import com.cliper.store.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +11,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/gallery")
-public class GalleryController {
+@RequestMapping("")
+public class Controller {
 
     @Autowired
     GalleryService galleryService;
 
+    @Autowired
+    PortfolioService portfolioService;
+
     // 갤러리 조회
-    @GetMapping("")
+    @GetMapping("/gallery")
     @ResponseBody
     public ResponseEntity<Object> getGallery() throws Exception {
         return new ResponseEntity<>(galleryService.getGallery(), HttpStatus.OK);
+    }
+
+    // 포트폴리오 조회
+    @GetMapping("/portfolio")
+    @ResponseBody
+    public ResponseEntity<Object> getPortfolio() throws Exception {
+        return new ResponseEntity<>(portfolioService.getPortfolio(), HttpStatus.OK);
     }
 }
