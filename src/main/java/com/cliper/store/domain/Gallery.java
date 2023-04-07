@@ -1,6 +1,6 @@
 package com.cliper.store.domain;
 
-import com.cliper.store.dto.GalleryPortfolioDto;
+import com.cliper.store.dto.ClipperBoardDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,8 +45,8 @@ public class Gallery extends BaseEntity {
         this.date = date;
     }
 
-    public GalleryPortfolioDto toDto() {
-        return GalleryPortfolioDto.builder()
+    public ClipperBoardDto toDto() {
+        return ClipperBoardDto.builder()
                 .galleryId(galleryId)
                 .title(title)
                 .contents(contents)

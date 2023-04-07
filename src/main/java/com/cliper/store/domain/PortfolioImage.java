@@ -1,6 +1,6 @@
 package com.cliper.store.domain;
 
-import com.cliper.store.dto.GalleryPortfolioImageDto;
+import com.cliper.store.dto.ClipperImageDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -32,8 +32,8 @@ public class PortfolioImage implements ClipperImage {
         this.portfolioId = portfolioId;
     }
 
-    public GalleryPortfolioImageDto toDto() {
-        return GalleryPortfolioImageDto.builder()
+    public ClipperImageDto toDto() {
+        return ClipperImageDto.builder()
                 .galleryImageId(portfolioImageId)
                 .imageId(image.getImageId())
                 .fileName(image.getFileName())

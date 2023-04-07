@@ -1,7 +1,7 @@
 package com.cliper.store.service;
 
 import com.cliper.store.domain.Gallery;
-import com.cliper.store.dto.GalleryDto;
+import com.cliper.store.dto.ClipperBoardDto;
 import com.cliper.store.repository.GalleryRepository;
 import com.cliper.store.response.ExceptionCode;
 import com.cliper.store.response.Response;
@@ -24,10 +24,10 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public Object getGallery() {
         List<Gallery> galleries = galleryRepository.findAll();
-        List<GalleryDto> galleryDtos = galleries.stream()
+        List<ClipperBoardDto> clipperBoardDtos = galleries.stream()
                 .map(Gallery::toDto)
                 .collect(Collectors.toList());
-        System.out.println(galleryDtos);
-        return new Response(ExceptionCode.BOARD_GET_OK, galleryDtos);
+        System.out.println(clipperBoardDtos);
+        return new Response(ExceptionCode.BOARD_GET_OK, clipperBoardDtos);
     }
 }

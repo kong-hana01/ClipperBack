@@ -1,8 +1,8 @@
 package com.cliper.store.domain;
 
-import com.cliper.store.dto.GalleryPortfolioImageDto;
+import com.cliper.store.dto.ClipperImageDto;
 
 public interface ClipperImage {
 
-    GalleryPortfolioImageDto toDto();
+    ClipperImageDto toDto();
 }

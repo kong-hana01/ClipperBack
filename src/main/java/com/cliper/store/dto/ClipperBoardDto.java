@@ -11,21 +11,21 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 @NoArgsConstructor
-public class GalleryPortfolioDto {
+public class ClipperBoardDto {
 
     private int galleryId;
     private String title;
     private String contents;
     private Date date;
-    private List<GalleryPortfolioImageDto> galleryPortfolioImageDtos;
+    private List<ClipperImageDto> clipperImageDtos;
 
     @Builder
-    public GalleryPortfolioDto(int galleryId, String title, String contents, Date date, List<GalleryImage> galleryImages) {
+    public ClipperBoardDto(int galleryId, String title, String contents, Date date, List<GalleryImage> galleryImages) {
         this.galleryId = galleryId;
         this.title = title;
         this.contents = contents;
         this.date = date;
-        this.galleryPortfolioImageDtos = galleryImages.stream()
+        this.clipperImageDtos = galleryImages.stream()
                 .map(GalleryImage::toDto)
                 .collect(Collectors.toList());
     }
