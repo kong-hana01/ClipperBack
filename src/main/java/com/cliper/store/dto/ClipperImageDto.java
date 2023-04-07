@@ -1,7 +1,6 @@
 package com.cliper.store.dto;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 @Setter
@@ -9,21 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 @NoArgsConstructor
 public class ClipperImageDto {
 
-    private int galleryImageId;
-    private int gallery_id;
-    private int imageId;
+    private static final String imagePath = "file:///C:/Users/user/Desktop/clipper/img/";
     private String fileName;
     private boolean isThumbnail;
 
-    @Value("${imagePath}")
-    private String filePath;
-
     @Builder
-    public ClipperImageDto(int galleryImageId, int gallery_id, int imageId, String fileName, boolean isThumbnail) {
-        this.galleryImageId = galleryImageId;
-        this.gallery_id = gallery_id;
-        this.imageId = imageId;
-        this.fileName = filePath + fileName;
+    public ClipperImageDto(String fileName, boolean isThumbnail) {
+        this.fileName = imagePath + fileName;
         this.isThumbnail = isThumbnail;
     }
 }

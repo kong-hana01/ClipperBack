@@ -8,11 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${uploadPath}")
-    private String uploadPath;
-
-    @Value("${resourcePath}")
-    private String resourcePath;
+    private static final String resourcePath = "file:///Users/user/Desktop/clipper/s3/img/";
+    private static final String uploadPath = "/img/**";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
