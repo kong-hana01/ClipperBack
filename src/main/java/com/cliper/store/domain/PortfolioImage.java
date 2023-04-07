@@ -34,11 +34,8 @@ public class PortfolioImage implements ClipperImage {
 
     public ClipperImageDto toDto() {
         return ClipperImageDto.builder()
-                .galleryImageId(portfolioImageId)
-                .imageId(image.getImageId())
                 .fileName(image.getFileName())
                 .isThumbnail(image.isThumbnail())
-                .gallery_id(portfolioId)
                 .build();
     }
 }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 @NoArgsConstructor
-public class ClipperBoardDto {
+public class GalleryDto {
 
     private int galleryId;
     private String title;
@@ -20,7 +20,7 @@ public class ClipperBoardDto {
     private List<ClipperImageDto> clipperImageDtos;
 
     @Builder
-    public ClipperBoardDto(int galleryId, String title, String contents, Date date, List<GalleryImage> galleryImages) {
+    public GalleryDto(int galleryId, String title, String contents, Date date, List<GalleryImage> galleryImages) {
         this.galleryId = galleryId;
         this.title = title;
         this.contents = contents;

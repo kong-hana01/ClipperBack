@@ -34,11 +34,8 @@ public class GalleryImage implements ClipperImage {
 
     public ClipperImageDto toDto() {
         return ClipperImageDto.builder()
-                .galleryImageId(galleryImageId)
-                .imageId(image.getImageId())
                 .fileName(image.getFileName())
                 .isThumbnail(image.isThumbnail())
-                .gallery_id(galleryId)
                 .build();
     }
 }
