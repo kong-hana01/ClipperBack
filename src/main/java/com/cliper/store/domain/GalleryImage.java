@@ -22,14 +22,15 @@ public class GalleryImage implements ClipperImage {
     @JoinColumn(name = "image_id", referencedColumnName = "image_id")
     private Image image;
 
-    @Column(name = "gallery_id")
-    private int galleryId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gallery_id", referencedColumnName = "gallery_id")
+    private Gallery gallery;
 
     @Builder
-    public GalleryImage(int galleryImageId, Image image, int galleryId) {
+    public GalleryImage(int galleryImageId, Image image, Gallery gallery) {
         this.galleryImageId = galleryImageId;
         this.image = image;
-        this.galleryId = galleryId;
+        this.gallery = gallery;
     }
 
     public ClipperImageDto toDto() {
