@@ -7,14 +7,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 public class GallerySaveDto {
+
+    private static final String datePattern = "yyyy-MM-dd";
+
     private String title;
     private String contents;
+    @JsonFormat(pattern = datePattern)
     private Date date;
 
     public Gallery toEntity() {
