@@ -38,8 +38,7 @@ public class Gallery extends BaseEntity {
     private List<GalleryImage> galleryImages = new ArrayList<>();
 
     @Builder
-    public Gallery(int galleryId, String title, String contents, Date date) {
-        this.galleryId = galleryId;
+    public Gallery(String title, String contents, Date date) {
         this.title = title;
         this.contents = contents;
         this.date = date;
