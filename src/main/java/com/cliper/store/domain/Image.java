@@ -24,8 +24,7 @@ public class Image extends BaseEntity {
     private boolean isThumbnail;
 
     @Builder
-    public Image(int imageId, String fileName, boolean isThumbnail) {
-        this.imageId = imageId;
+    public Image(String fileName, boolean isThumbnail) {
         this.fileName = fileName;
         this.isThumbnail = isThumbnail;
     }

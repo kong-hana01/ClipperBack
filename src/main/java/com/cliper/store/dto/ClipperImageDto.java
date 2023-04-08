@@ -2,19 +2,20 @@ package com.cliper.store.dto;
 
 import lombok.*;
 
+import static com.cliper.store.utils.Paths.IMAGE_PATH;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 public class ClipperImageDto {
 
-    private static final String imagePath = "file:///C:/Users/user/Desktop/clipper/img/";
     private String fileName;
     private boolean isThumbnail;
 
     @Builder
     public ClipperImageDto(String fileName, boolean isThumbnail) {
-        this.fileName = imagePath + fileName;
+        this.fileName = IMAGE_PATH + fileName;
         this.isThumbnail = isThumbnail;
     }
 }

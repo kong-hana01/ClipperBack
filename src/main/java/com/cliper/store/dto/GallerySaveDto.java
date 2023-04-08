@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,5 +23,12 @@ public class GallerySaveDto {
                 .contents(contents)
                 .date(date)
                 .build();
+    }
+
+    @Builder
+    public GallerySaveDto(String title, String contents, Date date) {
+        this.title = title;
+        this.contents = contents;
+        this.date = date;
     }
 }

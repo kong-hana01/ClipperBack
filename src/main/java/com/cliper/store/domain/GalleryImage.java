@@ -27,8 +27,7 @@ public class GalleryImage implements ClipperImage {
     private Gallery gallery;
 
     @Builder
-    public GalleryImage(int galleryImageId, Image image, Gallery gallery) {
-        this.galleryImageId = galleryImageId;
+    public GalleryImage(Image image, Gallery gallery) {
         this.image = image;
         this.gallery = gallery;
     }
