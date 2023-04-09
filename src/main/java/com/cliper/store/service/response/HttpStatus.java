@@ -11,7 +11,8 @@ public enum HttpStatus {
     CREATED(201),
     NOT_FOUND_VALUE(404),
     DUPLICATED_VALUE(409),
-    INVALID_ACCESS(403);
+    INVALID_ACCESS(403),
+    EMPTY(0);
 
     public int value;
 

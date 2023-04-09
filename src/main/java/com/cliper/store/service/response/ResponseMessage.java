@@ -10,6 +10,13 @@ public enum ResponseMessage {
     GALLERY_DELETE_MESSAGE("갤러리 삭제에 성공했습니다."),
     GALLERY_INVALID_GET_MESSAGE("갤러리를 찾을 수 없습니다."),
 
+    // 포트폴리오
+    PORTFOLIO_GET_MESSAGE("포트폴리오 확인에 성공했습니다."),
+    PORTFOLIO_CREATE_MESSAGE("포트폴리오 작성에 성공했습니다."),
+    PORTFOLIO_UPDATE_MESSAGE("포트폴리오 업데이트에 성공했습니다."),
+    PORTFOLIO_DELETE_MESSAGE("포트폴리오 삭제에 성공했습니다."),
+    PORTFOLIO_INVALID_GET_MESSAGE("포트폴리오를 찾을 수 없습니다."),
+
     // 공용
     INVALID_EXTENSION_MESSAGE("잘못된 확장자를 입력했습니다."),
     INVALID_IMAGE_MESSAGE("이미지를 입력해주세요."),
