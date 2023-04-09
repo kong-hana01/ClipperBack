@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class GalleryServiceImpl implements GalleryService {
 
+    public static final int EXISTS_STATUS = 1;
     @Autowired
     private final GalleryRepository galleryRepository;
 
@@ -34,7 +35,7 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public Object getGallery() {
-        List<Gallery> galleries = galleryRepository.findAll();
+        List<Gallery> galleries = galleryRepository.findAllByStatusEqualsOrderByDateDesc(EXISTS_STATUS);
         List<GalleryDto> galleryDtos = galleries.stream()
                 .map(Gallery::toDto)
                 .collect(Collectors.toList());
@@ -64,7 +65,7 @@ public class GalleryServiceImpl implements GalleryService {
     public Object updateGallery(int galleryId, GallerySaveDto gallerySaveDto, List<MultipartFile> files) {
         Gallery gallery = gallerySaveDto.toEntity();
         Optional<Gallery> lastGalleryOptional = galleryRepository.findById(galleryId);
-        if (lastGalleryOptional.isEmpty()) {
+        if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_ERROR_INVALID_UPDATE);
         }
         try {
@@ -82,7 +83,6 @@ public class GalleryServiceImpl implements GalleryService {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_OK);
     }
 }
