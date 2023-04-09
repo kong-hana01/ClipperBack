@@ -39,7 +39,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         List<PortfolioDto> galleryDtos = portfolios.stream()
                 .map(Portfolio::toDto)
                 .collect(Collectors.toList());
-        return new Response(ExceptionCodeProd.GALLERY_CREATE_OK, galleryDtos);
+        return new Response(ExceptionCodeProd.PORTFOLIO_GET_OK, galleryDtos);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-        return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_OK);
+        return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_CREATE_OK);
     }
 
     private void saveImages(Portfolio portfolio, List<Image> images) {

@@ -1,6 +1,7 @@
 package com.cliper.store.controller;
 
 import com.cliper.store.dto.GallerySaveDto;
+import com.cliper.store.dto.PortfolioSaveDto;
 import com.cliper.store.service.GalleryService;
 import com.cliper.store.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,12 @@ public class Controller {
     @ResponseBody
     public ResponseEntity<Object> deleteGallery(@PathVariable("galleryId") int galleryId) {
         return new ResponseEntity<>(galleryService.deleteGallery(galleryId), HttpStatus.OK);
+    }
+
+    // 포트폴리오 생성
+    @PostMapping("/portfolio/create")
+    @ResponseBody
+    public ResponseEntity<Object> savePortfolio(@RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+        return new ResponseEntity<>(portfolioService.savePortfolio(portfolioSaveDto, multipartFiles), HttpStatus.OK);
     }
 }

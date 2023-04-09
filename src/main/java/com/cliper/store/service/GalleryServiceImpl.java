@@ -73,7 +73,7 @@ public class GalleryServiceImpl implements GalleryService {
         Gallery gallery = gallerySaveDto.toEntity();
         Optional<Gallery> lastGalleryOptional = galleryRepository.findById(galleryId);
         if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
-            return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_ERROR_INVALID_UPDATE);
+            return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
@@ -91,7 +91,7 @@ public class GalleryServiceImpl implements GalleryService {
     public Object deleteGallery(int galleryId) {
         Optional<Gallery> lastGalleryOptional = galleryRepository.findById(galleryId);
         if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
-            return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_ERROR_INVALID_UPDATE);
+            return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
         Gallery lastGallery = lastGalleryOptional.get();
         lastGallery.delete();
