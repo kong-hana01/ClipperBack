@@ -43,6 +43,7 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public Object saveGallery(GallerySaveDto gallerySaveDto, List<MultipartFile> files) {
         Gallery gallery = gallerySaveDto.toEntity();
+        System.out.println(gallerySaveDto);
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
             for (Image image : images) {

@@ -1,4 +1,4 @@
-package com.cliper.store.response;
+package com.cliper.store.service.response;
 
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ public class ResponseType {
     private final String code;
     private final String message;
 
-    public ResponseType(ExceptionCode exceptionCode) {
+    public ResponseType(ExceptionCodeProd exceptionCode) {
         this.status = exceptionCode.getStatus().getValue();
         this.code = exceptionCode.getCode();
         this.message = exceptionCode.getMessage();

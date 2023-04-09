@@ -2,12 +2,13 @@ package com.cliper.store.service.handler;
 
 import java.util.Arrays;
 
+import static com.cliper.store.service.response.ResponseMessage.GALLERY_INVALID_EXTENSION_MESSAGE;
+
 public enum FileExtension {
     JPG("jpg"),
     JPEG("jpeg"),
     PNG("png");
 
-    private static final String INVALID_EXTENSION_MESSAGE = "잘못된 확장자를 입력했습니다.";
     private final String extension;
 
     FileExtension(String extension) {
@@ -18,7 +19,7 @@ public enum FileExtension {
         return Arrays.stream(values())
                 .filter(x -> x.extension.equalsIgnoreCase(extension))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(INVALID_EXTENSION_MESSAGE));
+                .orElseThrow(() -> new IllegalArgumentException(GALLERY_INVALID_EXTENSION_MESSAGE.getResponseMessage()));
     }
 
     String getExtension() {

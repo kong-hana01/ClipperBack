@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static com.cliper.store.service.response.ResponseMessage.GALLERY_INVALID_FILE_SAVE_MESSAGE;
+import static com.cliper.store.service.response.ResponseMessage.GALLERY_INVALID_IMAGE_MESSAGE;
 import static com.cliper.store.utils.Paths.IMAGE_PATH;
+import static com.cliper.store.utils.Paths.RESOURCE_PATH;
 
 public class ImageHandler {
-
-    public static final String INVALID_IMAGE_MESSAGE = "이미지를 입력해주세요.";
-    public static final String INVALID_FILE_SAVE_MESSAGE = "파일을 저장할 수 없습니다.";
 
     public List<Image> parseImageInfo(List<MultipartFile> multipartFiles) {
         ArrayList<Image> files = new ArrayList<>();
@@ -24,7 +24,7 @@ public class ImageHandler {
             return files;
         }
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        File file = new File(IMAGE_PATH + currentDate);
+        File file = new File(RESOURCE_PATH + currentDate);
         makeDirectory(file);
         addImages(multipartFiles, files, currentDate);
         return files;
@@ -57,19 +57,20 @@ public class ImageHandler {
 
     private static void saveImage(String currentDate, String absolutePath, MultipartFile multipartFile, String imageName) {
         try {
-            multipartFile.transferTo(new File(absolutePath + currentDate + "/" + imageName));
+            multipartFile.transferTo(new File(RESOURCE_PATH + currentDate + "/" + imageName));
         } catch (IOException exception) {
-            throw new IllegalArgumentException(INVALID_FILE_SAVE_MESSAGE);
+            throw new IllegalArgumentException(GALLERY_INVALID_FILE_SAVE_MESSAGE.getResponseMessage());
         }
     }
 
     private String extractImageName(MultipartFile multipartFile) {
         if (!multipartFile.isEmpty()) {
-            String contentType = multipartFile.getContentType();
+            String contentType = multipartFile.getContentType()
+                    .split("/")[1];
             String fileExtension = extractFileExtension(contentType);
             return UUID.randomUUID() + fileExtension;
         }
-        throw new IllegalArgumentException(INVALID_IMAGE_MESSAGE);
+        throw new IllegalArgumentException(GALLERY_INVALID_IMAGE_MESSAGE.getResponseMessage());
     }
 }
 
