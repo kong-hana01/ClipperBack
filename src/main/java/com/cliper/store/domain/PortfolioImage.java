@@ -23,14 +23,15 @@ public class PortfolioImage implements ClipperImage {
     @JoinColumn(name = "image_id", referencedColumnName = "image_id")
     private Image image;
 
-    @Column(name = "portfolio_id")
-    private int portfolioId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "portfolio_id", referencedColumnName = "portfolio_id")
+    private Portfolio portfolio;
 
     @Builder
-    public PortfolioImage(int portfolioImageId, Image image, int portfolioId) {
+    public PortfolioImage(int portfolioImageId, Image image, Portfolio portfolio) {
         this.portfolioImageId = portfolioImageId;
         this.image = image;
-        this.portfolioId = portfolioId;
+        this.portfolio = portfolio;
     }
 
     public ClipperImageDto toDto() {
