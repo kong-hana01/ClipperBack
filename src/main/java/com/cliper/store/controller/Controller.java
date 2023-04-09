@@ -70,4 +70,11 @@ public class Controller {
     public ResponseEntity<Object> updatePortfolio(@PathVariable("portfolioId") int portfolioId, @RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(portfolioService.updatePortfolio(portfolioId, portfolioSaveDto, multipartFiles), HttpStatus.OK);
     }
+
+    // 갤러리 삭제
+    @PostMapping("/portfolio/delete/{portfolioId}")
+    @ResponseBody
+    public ResponseEntity<Object> deletePortfolio(@PathVariable("portfolioId") int portfolioId) {
+        return new ResponseEntity<>(portfolioService.deletePortfolio(portfolioId), HttpStatus.OK);
+    }
 }

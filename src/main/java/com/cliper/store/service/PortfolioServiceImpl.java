@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class PortfolioServiceImpl implements PortfolioService {
 
+    public static final int EXISTS_STATUS = 1;
     @Autowired
     private final PortfolioRepository portfolioRepository;
 
@@ -36,7 +37,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public Object getPortfolio() {
-        List<Portfolio> portfolios = portfolioRepository.findAll();
+        List<Portfolio> portfolios = portfolioRepository.findAllByStatusEqualsOrderByDateDesc(EXISTS_STATUS);
         List<PortfolioDto> galleryDtos = portfolios.stream()
                 .map(Portfolio::toDto)
                 .collect(Collectors.toList());
@@ -85,4 +86,14 @@ public class PortfolioServiceImpl implements PortfolioService {
         return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_OK);
     }
 
+    @Override
+    public Object deletePortfolio(int portfolioId) {
+        Optional<Portfolio> lastPortfolioOptional = portfolioRepository.findById(portfolioId);
+        if (lastPortfolioOptional.isEmpty() || lastPortfolioOptional.get().getStatus() == 0) {
+            return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
+        }
+        Portfolio lastPortfolio = lastPortfolioOptional.get();
+        lastPortfolio.delete();
+        return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_DELETE_OK);
+    }
 }
