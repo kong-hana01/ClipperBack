@@ -14,6 +14,7 @@ import java.util.List;
 @Entity(name = "PORTFOLIO")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert
@@ -59,17 +60,5 @@ public class Portfolio extends BaseEntity {
                 .date(date)
                 .portfolioImages(portfolioImages)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "Portfolio{" +
-                "portfolioId=" + portfolioId +
-                ", portfolioCategory='" + portfolioCategory + '\'' +
-                ", agency='" + agency + '\'' +
-                ", contents='" + contents + '\'' +
-                ", date=" + date +
-                ", portfolioImages=" + portfolioImages +
-                '}';
     }
 }

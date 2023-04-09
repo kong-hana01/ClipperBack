@@ -37,7 +37,6 @@ public class ImageHandler {
     }
 
     private void addImages(List<MultipartFile> multipartFiles, ArrayList<Image> files, String currentDate) {
-        String absolutePath = new File(IMAGE_PATH).getAbsolutePath() + "/";
         for (MultipartFile multipartFile : multipartFiles) {
             String imageName = extractImageName(multipartFile);
             Image image = Image.builder()
@@ -45,12 +44,12 @@ public class ImageHandler {
                     .isThumbnail(false)
                     .build();
             files.add(image);
-            saveImage(currentDate, absolutePath, multipartFile, imageName);
+            saveImage(multipartFile, currentDate, imageName);
         }
         files.get(0).setThumbnail(true);
     }
 
-    private static void saveImage(String currentDate, String absolutePath, MultipartFile multipartFile, String imageName) {
+    private static void saveImage(MultipartFile multipartFile, String currentDate, String imageName) {
         try {
             multipartFile.transferTo(new File(RESOURCE_PATH + currentDate + "/" + imageName));
         } catch (IOException exception) {
@@ -73,5 +72,3 @@ public class ImageHandler {
         return matchExtension.getFullExtension();
     }
 }
-
-

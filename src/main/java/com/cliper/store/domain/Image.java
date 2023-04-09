@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity(name = "IMAGE")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert
@@ -27,14 +28,5 @@ public class Image extends BaseEntity {
     public Image(String fileName, boolean isThumbnail) {
         this.fileName = fileName;
         this.isThumbnail = isThumbnail;
-    }
-
-    @Override
-    public String toString() {
-        return "Image{" +
-                "imageId=" + imageId +
-                ", fileName='" + fileName + '\'' +
-                ", isThumbnail=" + isThumbnail +
-                '}';
     }
 }

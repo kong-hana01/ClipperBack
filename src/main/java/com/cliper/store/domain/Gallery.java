@@ -13,6 +13,7 @@ import java.util.List;
 @Entity(name = "GALLERY")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert
@@ -52,16 +53,5 @@ public class Gallery extends BaseEntity {
                 .date(date)
                 .galleryImages(galleryImages)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "Gallery{" +
-                "galleryId=" + galleryId +
-                ", title='" + title + '\'' +
-                ", contents='" + contents + '\'' +
-                ", date=" + date +
-                ", galleryImages=" + galleryImages +
-                '}';
     }
 }

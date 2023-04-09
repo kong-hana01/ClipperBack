@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity(name = "GALLERY_IMAGE")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert
@@ -37,14 +38,5 @@ public class GalleryImage implements ClipperImage {
                 .fileName(image.getFileName())
                 .isThumbnail(image.isThumbnail())
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "GalleryImage{" +
-                "galleryImageId=" + galleryImageId +
-                ", image=" + image +
-                ", gallery=" + gallery +
-                '}';
     }
 }

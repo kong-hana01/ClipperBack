@@ -43,7 +43,6 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public Object saveGallery(GallerySaveDto gallerySaveDto, List<MultipartFile> files) {
         Gallery gallery = gallerySaveDto.toEntity();
-        System.out.println(gallerySaveDto);
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
             for (Image image : images) {
@@ -51,7 +50,6 @@ public class GalleryServiceImpl implements GalleryService {
                         .gallery(gallery)
                         .image(image)
                         .build();
-                System.out.println(galleryImage);
                 galleryImageRepository.save(galleryImage);
             }
         } catch (IllegalArgumentException exception) {

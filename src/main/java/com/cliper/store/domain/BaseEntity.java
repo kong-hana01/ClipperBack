@@ -6,10 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,6 +18,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
+@ToString
 @DiscriminatorColumn
 @NoArgsConstructor
 @DynamicInsert
@@ -45,14 +43,5 @@ public abstract class BaseEntity {
     // 삭제된 데이터 복구
     public void restore() {
         this.status = 1;
-    }
-
-    @Override
-    public String toString() {
-        return "BaseEntity{" +
-                "createAt=" + createAt +
-                ", updateAt=" + updateAt +
-                ", status=" + status +
-                '}';
     }
 }
