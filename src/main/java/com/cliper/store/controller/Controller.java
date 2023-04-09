@@ -24,14 +24,14 @@ public class Controller {
     // 갤러리 조회
     @GetMapping("/gallery")
     @ResponseBody
-    public ResponseEntity<Object> getGallery() throws Exception {
+    public ResponseEntity<Object> getGallery() {
         return new ResponseEntity<>(galleryService.getGallery(), HttpStatus.OK);
     }
 
     // 포트폴리오 조회
     @GetMapping("/portfolio")
     @ResponseBody
-    public ResponseEntity<Object> getPortfolio() throws Exception {
+    public ResponseEntity<Object> getPortfolio() {
         return new ResponseEntity<>(portfolioService.getPortfolio(), HttpStatus.OK);
     }
 

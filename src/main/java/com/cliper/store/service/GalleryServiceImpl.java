@@ -47,18 +47,22 @@ public class GalleryServiceImpl implements GalleryService {
         Gallery gallery = gallerySaveDto.toEntity();
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
-            for (Image image : images) {
-                GalleryImage galleryImage = GalleryImage.builder()
-                        .gallery(gallery)
-                        .image(image)
-                        .build();
-                galleryImageRepository.save(galleryImage);
-            }
+            saveImages(gallery, images);
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_OK);
+    }
+
+    private void saveImages(Gallery gallery, List<Image> images) {
+        for (Image image : images) {
+            GalleryImage galleryImage = GalleryImage.builder()
+                    .gallery(gallery)
+                    .image(image)
+                    .build();
+            galleryImageRepository.save(galleryImage);
+        }
     }
 
     @Override
@@ -70,13 +74,7 @@ public class GalleryServiceImpl implements GalleryService {
         }
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
-            for (Image image : images) {
-                GalleryImage galleryImage = GalleryImage.builder()
-                        .gallery(gallery)
-                        .image(image)
-                        .build();
-                galleryImageRepository.save(galleryImage);
-            }
+            saveImages(gallery, images);
             Gallery lastGallery = lastGalleryOptional.get();
             lastGallery.delete();
         } catch (IllegalArgumentException exception) {
