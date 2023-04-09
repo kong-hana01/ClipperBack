@@ -8,6 +8,8 @@ import java.util.List;
 public interface GalleryService {
 
     Object getGallery();
+
     Object saveGallery(GallerySaveDto gallerySaveDto, List<MultipartFile> files);
+
     Object updateGallery(int galleryId, GallerySaveDto gallerySaveDto, List<MultipartFile> files);
 }

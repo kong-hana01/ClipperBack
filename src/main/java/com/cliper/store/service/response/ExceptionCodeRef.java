@@ -37,6 +37,13 @@ public enum ExceptionCodeRef {
         this.message = message;
     }
 
+    public static ExceptionCodeRef findExceptionCodeByCode(String code) {
+        return Arrays.stream(ExceptionCodeRef.values())
+                .filter(x -> x.getCode().equals(code))
+                .findFirst()
+                .orElse(EMPTY);
+    }
+
     public HttpStatus getStatus() {
         return status;
     }
@@ -47,12 +54,5 @@ public enum ExceptionCodeRef {
 
     public String getMessage() {
         return message;
-    }
-
-    public static ExceptionCodeRef findExceptionCodeByCode(String code) {
-        return Arrays.stream(ExceptionCodeRef.values())
-                .filter(x -> x.getCode().equals(code))
-                .findFirst()
-                .orElse(EMPTY);
     }
 }

@@ -1,6 +1,5 @@
 package com.cliper.store.domain;
 
-import com.cliper.store.dto.GalleryDto;
 import com.cliper.store.dto.PortfolioDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;

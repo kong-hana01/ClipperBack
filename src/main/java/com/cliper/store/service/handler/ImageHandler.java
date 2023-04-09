@@ -13,10 +13,17 @@ import java.util.UUID;
 
 import static com.cliper.store.service.response.ResponseMessage.GALLERY_INVALID_FILE_SAVE_MESSAGE;
 import static com.cliper.store.service.response.ResponseMessage.GALLERY_INVALID_IMAGE_MESSAGE;
-import static com.cliper.store.utils.Paths.IMAGE_PATH;
 import static com.cliper.store.utils.Paths.RESOURCE_PATH;
 
 public class ImageHandler {
+
+    private static void saveImage(MultipartFile multipartFile, String currentDate, String imageName) {
+        try {
+            multipartFile.transferTo(new File(RESOURCE_PATH + currentDate + "/" + imageName));
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(GALLERY_INVALID_FILE_SAVE_MESSAGE.getResponseMessage());
+        }
+    }
 
     public List<Image> parseImageInfo(List<MultipartFile> multipartFiles) {
         ArrayList<Image> files = new ArrayList<>();
@@ -47,14 +54,6 @@ public class ImageHandler {
             saveImage(multipartFile, currentDate, imageName);
         }
         files.get(0).setThumbnail(true);
-    }
-
-    private static void saveImage(MultipartFile multipartFile, String currentDate, String imageName) {
-        try {
-            multipartFile.transferTo(new File(RESOURCE_PATH + currentDate + "/" + imageName));
-        } catch (IOException exception) {
-            throw new IllegalArgumentException(GALLERY_INVALID_FILE_SAVE_MESSAGE.getResponseMessage());
-        }
     }
 
     private String extractImageName(MultipartFile multipartFile) {
