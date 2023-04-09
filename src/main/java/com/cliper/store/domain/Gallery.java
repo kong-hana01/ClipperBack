@@ -53,4 +53,15 @@ public class Gallery extends BaseEntity {
                 .galleryImages(galleryImages)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "Gallery{" +
+                "galleryId=" + galleryId +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", date=" + date +
+                ", galleryImages=" + galleryImages +
+                '}';
+    }
 }

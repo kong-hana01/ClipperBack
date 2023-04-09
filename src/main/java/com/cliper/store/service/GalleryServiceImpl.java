@@ -7,9 +7,7 @@ import com.cliper.store.dto.GalleryDto;
 import com.cliper.store.dto.GallerySaveDto;
 import com.cliper.store.repository.GalleryImageRepository;
 import com.cliper.store.repository.GalleryRepository;
-import com.cliper.store.response.ExceptionCode;
-import com.cliper.store.response.Response;
-import com.cliper.store.response.ResponseEmpty;
+import com.cliper.store.service.response.*;
 import com.cliper.store.service.handler.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,7 @@ public class GalleryServiceImpl implements GalleryService {
         List<GalleryDto> galleryDtos = galleries.stream()
                 .map(Gallery::toDto)
                 .collect(Collectors.toList());
-        return new Response(ExceptionCode.BOARD_GET_OK, galleryDtos);
+        return new Response(ExceptionCodeProd.GALLERY_GET_OK, galleryDtos);
     }
 
     @Override
@@ -52,11 +50,13 @@ public class GalleryServiceImpl implements GalleryService {
                         .gallery(gallery)
                         .image(image)
                         .build();
+                System.out.println(galleryImage);
                 galleryImageRepository.save(galleryImage);
             }
         } catch (IllegalArgumentException exception) {
-            return new ResponseEmpty(ExceptionCode.BOARD_CREATE_ERROR);
+            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
+            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-        return new ResponseEmpty(ExceptionCode.BOARD_CREATE_OK);
+        return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_OK);
     }
 }

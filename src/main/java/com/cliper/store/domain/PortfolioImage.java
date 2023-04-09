@@ -38,4 +38,13 @@ public class PortfolioImage implements ClipperImage {
                 .isThumbnail(image.isThumbnail())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "PortfolioImage{" +
+                "portfolioImageId=" + portfolioImageId +
+                ", image=" + image +
+                ", portfolioId=" + portfolioId +
+                '}';
+    }
 }

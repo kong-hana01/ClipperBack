@@ -46,4 +46,13 @@ public abstract class BaseEntity {
     public void restore() {
         this.status = 1;
     }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                ", status=" + status +
+                '}';
+    }
 }

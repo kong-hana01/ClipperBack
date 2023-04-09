@@ -60,4 +60,16 @@ public class Portfolio extends BaseEntity {
                 .portfolioImages(portfolioImages)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "Portfolio{" +
+                "portfolioId=" + portfolioId +
+                ", portfolioCategory='" + portfolioCategory + '\'' +
+                ", agency='" + agency + '\'' +
+                ", contents='" + contents + '\'' +
+                ", date=" + date +
+                ", portfolioImages=" + portfolioImages +
+                '}';
+    }
 }

@@ -38,4 +38,13 @@ public class GalleryImage implements ClipperImage {
                 .isThumbnail(image.isThumbnail())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "GalleryImage{" +
+                "galleryImageId=" + galleryImageId +
+                ", image=" + image +
+                ", gallery=" + gallery +
+                '}';
+    }
 }

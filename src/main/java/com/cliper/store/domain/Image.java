@@ -28,4 +28,13 @@ public class Image extends BaseEntity {
         this.fileName = fileName;
         this.isThumbnail = isThumbnail;
     }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "imageId=" + imageId +
+                ", fileName='" + fileName + '\'' +
+                ", isThumbnail=" + isThumbnail +
+                '}';
+    }
 }
