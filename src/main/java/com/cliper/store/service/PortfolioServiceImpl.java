@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,4 +65,24 @@ public class PortfolioServiceImpl implements PortfolioService {
             portfolioImageRepository.save(portfolioImage);
         }
     }
+
+    @Override
+    public Object updatePortfolio(int portfolioId, PortfolioSaveDto portfolioSaveDto, List<MultipartFile> files) {
+        Portfolio portfolio = portfolioSaveDto.toEntity();
+        Optional<Portfolio> lastPortfolioOptional = portfolioRepository.findById(portfolioId);
+        if (lastPortfolioOptional.isEmpty() || lastPortfolioOptional.get().getStatus() == 0) {
+            return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
+        }
+        try {
+            List<Image> images = imageHandler.parseImageInfo(files);
+            saveImages(portfolio, images);
+            Portfolio lastPortfolio = lastPortfolioOptional.get();
+            lastPortfolio.delete();
+        } catch (IllegalArgumentException exception) {
+            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
+            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
+        }
+        return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_OK);
+    }
+
 }

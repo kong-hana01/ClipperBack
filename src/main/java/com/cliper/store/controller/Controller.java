@@ -63,4 +63,11 @@ public class Controller {
     public ResponseEntity<Object> savePortfolio(@RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(portfolioService.savePortfolio(portfolioSaveDto, multipartFiles), HttpStatus.OK);
     }
+
+    // 갤러리 업데이트
+    @PostMapping("/portfolio/update/{portfolioId}")
+    @ResponseBody
+    public ResponseEntity<Object> updatePortfolio(@PathVariable("portfolioId") int portfolioId, @RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+        return new ResponseEntity<>(portfolioService.updatePortfolio(portfolioId, portfolioSaveDto, multipartFiles), HttpStatus.OK);
+    }
 }
