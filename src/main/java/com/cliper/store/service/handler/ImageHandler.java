@@ -50,11 +50,6 @@ public class ImageHandler {
         files.get(0).setThumbnail(true);
     }
 
-    private String extractFileExtension(String contentType) {
-        FileExtension matchExtension = FileExtension.findMatchExtension(contentType);
-        return matchExtension.getExtension();
-    }
-
     private static void saveImage(String currentDate, String absolutePath, MultipartFile multipartFile, String imageName) {
         try {
             multipartFile.transferTo(new File(RESOURCE_PATH + currentDate + "/" + imageName));
@@ -71,6 +66,11 @@ public class ImageHandler {
             return UUID.randomUUID() + fileExtension;
         }
         throw new IllegalArgumentException(GALLERY_INVALID_IMAGE_MESSAGE.getResponseMessage());
+    }
+
+    private String extractFileExtension(String contentType) {
+        FileExtension matchExtension = FileExtension.findMatchExtension(contentType);
+        return matchExtension.getFullExtension();
     }
 }
 

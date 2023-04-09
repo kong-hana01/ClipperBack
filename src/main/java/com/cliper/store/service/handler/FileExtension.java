@@ -9,6 +9,7 @@ public enum FileExtension {
     JPEG("jpeg"),
     PNG("png");
 
+    public static final String EXTENSION_DOT = ".";
     private final String extension;
 
     FileExtension(String extension) {
@@ -20,6 +21,10 @@ public enum FileExtension {
                 .filter(x -> x.extension.equalsIgnoreCase(extension))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(GALLERY_INVALID_EXTENSION_MESSAGE.getResponseMessage()));
+    }
+
+    String getFullExtension() {
+        return EXTENSION_DOT + extension;
     }
 
     String getExtension() {
