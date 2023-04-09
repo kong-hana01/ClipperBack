@@ -1,4 +1,4 @@
-package com.cliper.store.response;
+package com.cliper.store.service.response;
 
 import lombok.Getter;
 
