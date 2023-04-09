@@ -1,6 +1,5 @@
 package com.cliper.store.repository;
 
-import com.cliper.store.domain.GalleryImage;
 import com.cliper.store.domain.PortfolioImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

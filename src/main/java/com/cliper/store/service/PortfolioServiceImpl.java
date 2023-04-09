@@ -1,7 +1,8 @@
 package com.cliper.store.service;
 
-import com.cliper.store.domain.*;
-import com.cliper.store.dto.GallerySaveDto;
+import com.cliper.store.domain.Image;
+import com.cliper.store.domain.Portfolio;
+import com.cliper.store.domain.PortfolioImage;
 import com.cliper.store.dto.PortfolioDto;
 import com.cliper.store.dto.PortfolioSaveDto;
 import com.cliper.store.repository.PortfolioImageRepository;

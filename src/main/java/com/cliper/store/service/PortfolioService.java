@@ -1,6 +1,5 @@
 package com.cliper.store.service;
 
-import com.cliper.store.domain.Portfolio;
 import com.cliper.store.dto.PortfolioSaveDto;
 import org.springframework.web.multipart.MultipartFile;
 

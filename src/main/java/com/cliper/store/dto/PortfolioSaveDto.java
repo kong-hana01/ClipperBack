@@ -1,6 +1,5 @@
 package com.cliper.store.dto;
 
-import com.cliper.store.domain.Gallery;
 import com.cliper.store.domain.Portfolio;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
