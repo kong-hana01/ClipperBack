@@ -2,7 +2,7 @@ package com.cliper.store.service.handler;
 
 import java.util.Arrays;
 
-import static com.cliper.store.service.response.ResponseMessage.GALLERY_INVALID_EXTENSION_MESSAGE;
+import static com.cliper.store.service.response.ResponseMessage.INVALID_EXTENSION_MESSAGE;
 
 public enum FileExtension {
     JPG("jpg"),
@@ -20,7 +20,7 @@ public enum FileExtension {
         return Arrays.stream(values())
                 .filter(x -> x.extension.equalsIgnoreCase(extension))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(GALLERY_INVALID_EXTENSION_MESSAGE.getResponseMessage()));
+                .orElseThrow(() -> new IllegalArgumentException(INVALID_EXTENSION_MESSAGE.getResponseMessage()));
     }
 
     String getFullExtension() {

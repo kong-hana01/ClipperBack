@@ -3,13 +3,17 @@ package com.cliper.store.service.response;
 import java.util.Arrays;
 
 public enum ResponseMessage {
+    // 갤러리
     GALLERY_GET_MESSAGE("갤러리 확인에 성공했습니다."),
     GALLERY_CREATE_MESSAGE("갤러리 작성에 성공했습니다."),
     GALLERY_UPDATE_MESSAGE("갤러리 업데이트에 성공했습니다."),
-    GALLERY_INVALID_EXTENSION_MESSAGE("잘못된 확장자를 입력했습니다."),
-    GALLERY_INVALID_IMAGE_MESSAGE("이미지를 입력해주세요."),
-    GALLERY_INVALID_FILE_SAVE_MESSAGE("파일을 저장할 수 없습니다."),
-    GALLERY_INVALID_GET_MESSAGE("게시물을 찾을 수 없습니다."),
+    GALLERY_DELETE_MESSAGE("갤러리 삭제에 성공했습니다."),
+    GALLERY_INVALID_GET_MESSAGE("갤러리를 찾을 수 없습니다."),
+
+    // 공용
+    INVALID_EXTENSION_MESSAGE("잘못된 확장자를 입력했습니다."),
+    INVALID_IMAGE_MESSAGE("이미지를 입력해주세요."),
+    INVALID_FILE_SAVE_MESSAGE("파일을 저장할 수 없습니다."),
     EMPTY("");
 
     final String responseMessage;

@@ -12,4 +12,6 @@ public interface GalleryService {
     Object saveGallery(GallerySaveDto gallerySaveDto, List<MultipartFile> files);
 
     Object updateGallery(int galleryId, GallerySaveDto gallerySaveDto, List<MultipartFile> files);
+
+    Object deleteGallery(int galleryId);
 }

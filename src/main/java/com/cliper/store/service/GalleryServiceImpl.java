@@ -86,4 +86,15 @@ public class GalleryServiceImpl implements GalleryService {
         }
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_OK);
     }
+
+    @Override
+    public Object deleteGallery(int galleryId) {
+        Optional<Gallery> lastGalleryOptional = galleryRepository.findById(galleryId);
+        if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
+            return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_ERROR_INVALID_UPDATE);
+        }
+        Gallery lastGallery = lastGalleryOptional.get();
+        lastGallery.delete();
+        return new ResponseEmpty(ExceptionCodeProd.GALLERY_DELETE_OK);
+    }
 }
