@@ -41,4 +41,11 @@ public class Controller {
     public ResponseEntity<Object> save(@RequestPart(value = "data") GallerySaveDto gallerySaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(galleryService.saveGallery(gallerySaveDto, multipartFiles), HttpStatus.OK);
     }
+
+    // 갤러리 업데이트
+    @PostMapping("/gallery/update/{galleryId}")
+    @ResponseBody
+    public ResponseEntity<Object> update(@PathVariable("galleryId") int galleryId, @RequestPart(value = "data") GallerySaveDto gallerySaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+        return new ResponseEntity<>(galleryService.updateGallery(galleryId, gallerySaveDto, multipartFiles), HttpStatus.OK);
+    }
 }

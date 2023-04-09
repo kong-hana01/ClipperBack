@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,5 +58,31 @@ public class GalleryServiceImpl implements GalleryService {
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_OK);
+    }
+
+    @Override
+    public Object updateGallery(int galleryId, GallerySaveDto gallerySaveDto, List<MultipartFile> files) {
+        Gallery gallery = gallerySaveDto.toEntity();
+        Optional<Gallery> lastGalleryOptional = galleryRepository.findById(galleryId);
+        if (lastGalleryOptional.isEmpty()) {
+            return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_ERROR_INVALID_UPDATE);
+        }
+        try {
+            List<Image> images = imageHandler.parseImageInfo(files);
+            for (Image image : images) {
+                GalleryImage galleryImage = GalleryImage.builder()
+                        .gallery(gallery)
+                        .image(image)
+                        .build();
+                galleryImageRepository.save(galleryImage);
+            }
+            Gallery lastGallery = lastGalleryOptional.get();
+            lastGallery.delete();
+        } catch (IllegalArgumentException exception) {
+            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
+            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
+        }
+
+        return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_OK);
     }
 }
