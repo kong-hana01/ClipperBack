@@ -14,14 +14,16 @@ import java.util.stream.Collectors;
 public class GalleryDto {
 
     private int galleryId;
+    private String galleryType;
     private String title;
     private String contents;
     private Date date;
     private List<ClipperImageDto> clipperImageDtos;
 
     @Builder
-    public GalleryDto(int galleryId, String title, String contents, Date date, List<GalleryImage> galleryImages) {
+    public GalleryDto(int galleryId, String galleryType, String title, String contents, Date date, List<GalleryImage> galleryImages) {
         this.galleryId = galleryId;
+        this.galleryType = galleryType;
         this.title = title;
         this.contents = contents;
         this.date = date;

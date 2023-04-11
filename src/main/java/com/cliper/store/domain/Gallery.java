@@ -24,6 +24,9 @@ public class Gallery extends BaseEntity {
     @Column(name = "gallery_id")
     private int galleryId;
 
+    @Column(name = "gallery_type")
+    private String galleryType;
+
     @Column(length = 45, nullable = false, name = "title")
     private String title;
 
@@ -39,7 +42,8 @@ public class Gallery extends BaseEntity {
     private List<GalleryImage> galleryImages = new ArrayList<>();
 
     @Builder
-    public Gallery(String title, String contents, Date date) {
+    public Gallery(String galleryType, String title, String contents, Date date) {
+        this.galleryType = galleryType;
         this.title = title;
         this.contents = contents;
         this.date = date;
@@ -48,6 +52,7 @@ public class Gallery extends BaseEntity {
     public GalleryDto toDto() {
         return GalleryDto.builder()
                 .galleryId(galleryId)
+                .galleryType(galleryType)
                 .title(title)
                 .contents(contents)
                 .date(date)
