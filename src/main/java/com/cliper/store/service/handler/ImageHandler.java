@@ -19,7 +19,9 @@ public class ImageHandler {
 
     private static void saveImage(MultipartFile multipartFile, String currentDate, String imageName) {
         try {
-            multipartFile.transferTo(new File(RESOURCE_PATH + currentDate + "/" + imageName));
+            String absoluteFilePath = new File(RESOURCE_PATH + "/" + currentDate + "/" + imageName).getAbsolutePath();
+            File file = new File(absoluteFilePath);
+            multipartFile.transferTo(file);
         } catch (IOException exception) {
             throw new IllegalArgumentException(INVALID_FILE_SAVE_MESSAGE.getResponseMessage());
         }
@@ -31,7 +33,8 @@ public class ImageHandler {
             return files;
         }
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        File file = new File(RESOURCE_PATH + currentDate);
+        String absolutePath = new File(RESOURCE_PATH + currentDate).getAbsolutePath();
+        File file = new File(absolutePath);
         makeDirectory(file);
         addImages(multipartFiles, files, currentDate);
         return files;
