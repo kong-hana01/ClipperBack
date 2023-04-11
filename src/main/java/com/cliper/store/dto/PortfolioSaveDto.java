@@ -14,24 +14,27 @@ public class PortfolioSaveDto {
 
     private static final String datePattern = "yyyy-MM-dd";
 
-    private String portfolioCategory;
+    private String title;
     private String agency;
+    private String introduction;
     private String contents;
     @JsonFormat(pattern = datePattern)
     private Date date;
 
     @Builder
-    public PortfolioSaveDto(String portfolioCategory, String agency, String contents, Date date) {
-        this.portfolioCategory = portfolioCategory;
+    public PortfolioSaveDto(String title, String agency, String introduction, String contents, Date date) {
+        this.title = title;
         this.agency = agency;
+        this.introduction = introduction;
         this.contents = contents;
         this.date = date;
     }
 
     public Portfolio toEntity() {
         return Portfolio.builder()
-                .portfolioCategory(portfolioCategory)
+                .title(title)
                 .agency(agency)
+                .introduction(introduction)
                 .contents(contents)
                 .date(date)
                 .build();

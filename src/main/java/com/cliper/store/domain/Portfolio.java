@@ -24,11 +24,14 @@ public class Portfolio extends BaseEntity {
     @Column(name = "portfolio_id")
     private int portfolioId;
 
-    @Column(name = "portfolio_category")
-    private String portfolioCategory;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "agency")
     private String agency;
+
+    @Column(name = "introduction")
+    private String introduction;
 
     @Column(name = "contents")
     private String contents;
@@ -42,10 +45,11 @@ public class Portfolio extends BaseEntity {
     private List<PortfolioImage> portfolioImages = new ArrayList<>();
 
     @Builder
-    public Portfolio(int portfolioId, String portfolioCategory, String agency, String contents, Date date) {
+    public Portfolio(int portfolioId, String title, String agency, String introduction, String contents, Date date) {
         this.portfolioId = portfolioId;
-        this.portfolioCategory = portfolioCategory;
+        this.title = title;
         this.agency = agency;
+        this.introduction = introduction;
         this.contents = contents;
         this.date = date;
     }
@@ -53,8 +57,9 @@ public class Portfolio extends BaseEntity {
     public PortfolioDto toDto() {
         return PortfolioDto.builder()
                 .portfolioId(portfolioId)
-                .portfolioCategory(portfolioCategory)
+                .title(title)
                 .agency(agency)
+                .introduction(introduction)
                 .contents(contents)
                 .date(date)
                 .portfolioImages(portfolioImages)
