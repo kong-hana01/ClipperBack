@@ -12,7 +12,6 @@ import com.cliper.store.service.handler.ImageHandler;
 import com.cliper.store.service.response.ExceptionCodeProd;
 import com.cliper.store.service.response.Response;
 import com.cliper.store.service.response.ResponseEmpty;
-import com.cliper.store.service.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,17 +50,13 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public Object savePortfolio(PortfolioSaveDto portfolioSaveDto, List<MultipartFile> files) {
         Portfolio portfolio = portfolioSaveDto.toEntity();
-        try {
-            List<Image> images = imageHandler.parseImageInfo(files);
-            List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
-            List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
-            PortfolioDto portfolioDto = portfolio.toDto();
-            portfolioDto.setClipperImageDtos(clipperImageDtos);
-            return new Response(ExceptionCodeProd.PORTFOLIO_CREATE_OK, portfolioDto);
-        } catch (IllegalArgumentException exception) {
-            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
-            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
-        }
+        List<Image> images = imageHandler.parseImageInfo(files);
+        List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
+        List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
+        PortfolioDto portfolioDto = portfolio.toDto();
+        portfolioDto.setClipperImageDtos(clipperImageDtos);
+        return new Response(ExceptionCodeProd.PORTFOLIO_CREATE_OK, portfolioDto);
+
     }
 
     private List<PortfolioImage> saveImages(Portfolio portfolio, List<Image> images) {
@@ -84,21 +79,18 @@ public class PortfolioServiceImpl implements PortfolioService {
         if (lastPortfolioOptional.isEmpty() || lastPortfolioOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
-        try {
-            List<Image> images = imageHandler.parseImageInfo(files);
-            List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
 
-            Portfolio lastPortfolio = lastPortfolioOptional.get();
-            delete(lastPortfolio);
+        List<Image> images = imageHandler.parseImageInfo(files);
+        List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
 
-            List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
-            PortfolioDto portfolioDto = portfolio.toDto();
-            portfolioDto.setClipperImageDtos(clipperImageDtos);
-            return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolio.toDto());
-        } catch (IllegalArgumentException exception) {
-            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
-            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
-        }
+        Portfolio lastPortfolio = lastPortfolioOptional.get();
+        delete(lastPortfolio);
+
+        List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
+        PortfolioDto portfolioDto = portfolio.toDto();
+        portfolioDto.setClipperImageDtos(clipperImageDtos);
+        return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolio.toDto());
+
     }
 
     private void delete(Portfolio lastPortfolio) {

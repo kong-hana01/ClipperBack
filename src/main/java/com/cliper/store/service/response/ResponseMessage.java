@@ -21,6 +21,7 @@ public enum ResponseMessage {
     INVALID_EXTENSION_MESSAGE("잘못된 확장자를 입력했습니다."),
     INVALID_IMAGE_MESSAGE("이미지를 입력해주세요."),
     INVALID_FILE_SAVE_MESSAGE("파일을 저장할 수 없습니다."),
+    INVALID_DATABASE_ACCESS_MESSAGE("데이터베이스에 접근할 수 없습니다."),
     EMPTY("");
 
     final String responseMessage;

@@ -1,6 +1,8 @@
 package com.cliper.store.service;
 
-import com.cliper.store.domain.*;
+import com.cliper.store.domain.Gallery;
+import com.cliper.store.domain.GalleryImage;
+import com.cliper.store.domain.Image;
 import com.cliper.store.dto.ClipperImageDto;
 import com.cliper.store.dto.GalleryDto;
 import com.cliper.store.dto.GallerySaveDto;
@@ -10,7 +12,6 @@ import com.cliper.store.service.handler.ImageHandler;
 import com.cliper.store.service.response.ExceptionCodeProd;
 import com.cliper.store.service.response.Response;
 import com.cliper.store.service.response.ResponseEmpty;
-import com.cliper.store.service.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,16 +49,12 @@ public class GalleryServiceImpl implements GalleryService {
     @Override
     public Object saveGallery(GallerySaveDto gallerySaveDto, List<MultipartFile> files) {
         Gallery gallery = gallerySaveDto.toEntity();
-        try {
-            List<Image> images = imageHandler.parseImageInfo(files);
-            List<GalleryImage> galleryImages = saveImages(gallery, images);
+        List<Image> images = imageHandler.parseImageInfo(files);
+        List<GalleryImage> galleryImages = saveImages(gallery, images);
 
-            GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
-            return new Response(ExceptionCodeProd.GALLERY_CREATE_OK, galleryDto);
-        } catch (IllegalArgumentException exception) {
-            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
-            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
-        }
+        GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
+        return new Response(ExceptionCodeProd.GALLERY_CREATE_OK, galleryDto);
+
     }
 
     private static GalleryDto generateGallertDto(Gallery gallery, List<GalleryImage> galleryImages) {
@@ -90,17 +87,14 @@ public class GalleryServiceImpl implements GalleryService {
         if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
-        try {
-            List<Image> images = imageHandler.parseImageInfo(files);
-            List<GalleryImage> galleryImages = saveImages(gallery, images);
-            delete(lastGalleryOptional.get());
 
-            GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
-            return new Response(ExceptionCodeProd.GALLERY_UPDATE_OK, galleryDto);
-        } catch (IllegalArgumentException exception) {
-            ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
-            return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
-        }
+        List<Image> images = imageHandler.parseImageInfo(files);
+        List<GalleryImage> galleryImages = saveImages(gallery, images);
+        delete(lastGalleryOptional.get());
+
+        GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
+        return new Response(ExceptionCodeProd.GALLERY_UPDATE_OK, galleryDto);
+
     }
 
     private void delete(Gallery gallery) {

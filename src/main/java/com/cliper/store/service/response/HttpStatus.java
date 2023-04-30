@@ -12,6 +12,7 @@ public enum HttpStatus {
     NOT_FOUND_VALUE(404),
     DUPLICATED_VALUE(409),
     INVALID_ACCESS(403),
+    DATABASE_ACCESS(500),
     EMPTY(0);
 
     public int value;
