@@ -3,6 +3,7 @@ package com.cliper.store.service;
 import com.cliper.store.domain.Image;
 import com.cliper.store.domain.Portfolio;
 import com.cliper.store.domain.PortfolioImage;
+import com.cliper.store.dto.ClipperImageDto;
 import com.cliper.store.dto.PortfolioDto;
 import com.cliper.store.dto.PortfolioSaveDto;
 import com.cliper.store.repository.PortfolioImageRepository;
@@ -40,10 +41,10 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public Object getPortfolio() {
         List<Portfolio> portfolios = portfolioRepository.findAllByStatusEqualsOrderByDateDesc(EXISTS_STATUS);
-        List<PortfolioDto> galleryDtos = portfolios.stream()
+        List<PortfolioDto> portfolioDtos = portfolios.stream()
                 .map(Portfolio::toDto)
                 .collect(Collectors.toList());
-        return new Response(ExceptionCodeProd.PORTFOLIO_GET_OK, galleryDtos);
+        return new Response(ExceptionCodeProd.PORTFOLIO_GET_OK, portfolioDtos);
     }
 
     @Override
@@ -51,15 +52,18 @@ public class PortfolioServiceImpl implements PortfolioService {
         Portfolio portfolio = portfolioSaveDto.toEntity();
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
-            saveImages(portfolio, images);
+            List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
+            List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
+            PortfolioDto portfolioDto = portfolio.toDto();
+            portfolioDto.setClipperImageDtos(clipperImageDtos);
+            return new Response(ExceptionCodeProd.PORTFOLIO_CREATE_OK, portfolioDto);
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-        return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_CREATE_OK);
     }
 
-    private void saveImages(Portfolio portfolio, List<Image> images) {
+    private List<PortfolioImage> saveImages(Portfolio portfolio, List<Image> images) {
         for (Image image : images) {
             PortfolioImage portfolioImage = PortfolioImage.builder()
                     .portfolio(portfolio)
@@ -67,6 +71,12 @@ public class PortfolioServiceImpl implements PortfolioService {
                     .build();
             portfolioImageRepository.save(portfolioImage);
         }
+        return images.stream()
+                .map(image -> PortfolioImage.builder()
+                        .portfolio(portfolio)
+                        .image(image)
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -78,14 +88,19 @@ public class PortfolioServiceImpl implements PortfolioService {
         }
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
-            saveImages(portfolio, images);
-            delete(lastPortfolioOptional.get());
+            List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
 
+            Portfolio lastPortfolio = lastPortfolioOptional.get();
+            delete(lastPortfolio);
+
+            List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
+            PortfolioDto portfolioDto = portfolio.toDto();
+            portfolioDto.setClipperImageDtos(clipperImageDtos);
+            return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolio.toDto());
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-        return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_OK);
     }
 
     private void delete(Portfolio lastPortfolio) {
@@ -103,7 +118,8 @@ public class PortfolioServiceImpl implements PortfolioService {
         if (lastPortfolioOptional.isEmpty() || lastPortfolioOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
-        delete(lastPortfolioOptional.get());
+        Portfolio lastPortfolio = lastPortfolioOptional.get();
+        delete(lastPortfolio);
         return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_DELETE_OK);
     }
 }

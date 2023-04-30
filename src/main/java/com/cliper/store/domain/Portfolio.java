@@ -13,7 +13,6 @@ import java.util.List;
 @Entity(name = "PORTFOLIO")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert

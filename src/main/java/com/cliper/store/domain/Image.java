@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity(name = "IMAGE")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicInsert
