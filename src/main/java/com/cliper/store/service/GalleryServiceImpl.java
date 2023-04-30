@@ -1,6 +1,7 @@
 package com.cliper.store.service;
 
 import com.cliper.store.domain.*;
+import com.cliper.store.dto.ClipperImageDto;
 import com.cliper.store.dto.GalleryDto;
 import com.cliper.store.dto.GallerySaveDto;
 import com.cliper.store.repository.GalleryImageRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,22 +50,37 @@ public class GalleryServiceImpl implements GalleryService {
         Gallery gallery = gallerySaveDto.toEntity();
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
-            saveImages(gallery, images);
+            List<GalleryImage> galleryImages = saveImages(gallery, images);
+
+            GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
+            return new Response(ExceptionCodeProd.GALLERY_CREATE_OK, galleryDto);
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-        return new ResponseEmpty(ExceptionCodeProd.GALLERY_CREATE_OK);
     }
 
-    private void saveImages(Gallery gallery, List<Image> images) {
+    private static GalleryDto generateGallertDto(Gallery gallery, List<GalleryImage> galleryImages) {
+        List<ClipperImageDto> clipperImageDtos = galleryImages.stream()
+                .map(galleryImage -> galleryImage.toDto())
+                .collect(Collectors.toList());
+        GalleryDto galleryDto = gallery.toDto();
+
+        galleryDto.setClipperImageDtos(clipperImageDtos);
+        return galleryDto;
+    }
+
+    private List<GalleryImage> saveImages(Gallery gallery, List<Image> images) {
+        List<GalleryImage> galleryImages = new ArrayList<>();
         for (Image image : images) {
             GalleryImage galleryImage = GalleryImage.builder()
                     .gallery(gallery)
                     .image(image)
                     .build();
             galleryImageRepository.save(galleryImage);
+            galleryImages.add(galleryImage);
         }
+        return galleryImages;
     }
 
     @Override
@@ -75,13 +92,15 @@ public class GalleryServiceImpl implements GalleryService {
         }
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
-            saveImages(gallery, images);
+            List<GalleryImage> galleryImages = saveImages(gallery, images);
             delete(lastGalleryOptional.get());
+
+            GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
+            return new Response(ExceptionCodeProd.GALLERY_UPDATE_OK, galleryDto);
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
-        return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_OK);
     }
 
     private void delete(Gallery gallery) {

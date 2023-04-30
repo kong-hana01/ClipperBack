@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,19 +65,16 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     private List<PortfolioImage> saveImages(Portfolio portfolio, List<Image> images) {
+        List<PortfolioImage> portfolioImages = new ArrayList<>();
         for (Image image : images) {
             PortfolioImage portfolioImage = PortfolioImage.builder()
                     .portfolio(portfolio)
                     .image(image)
                     .build();
             portfolioImageRepository.save(portfolioImage);
+            portfolioImages.add(portfolioImage);
         }
-        return images.stream()
-                .map(image -> PortfolioImage.builder()
-                        .portfolio(portfolio)
-                        .image(image)
-                        .build())
-                .collect(Collectors.toList());
+        return portfolioImages;
     }
 
     @Override
