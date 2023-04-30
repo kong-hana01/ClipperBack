@@ -52,11 +52,19 @@ public class PortfolioServiceImpl implements PortfolioService {
         Portfolio portfolio = portfolioSaveDto.toEntity();
         List<Image> images = imageHandler.parseImageInfo(files);
         List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
-        List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
-        PortfolioDto portfolioDto = portfolio.toDto();
-        portfolioDto.setClipperImageDtos(clipperImageDtos);
+
+        PortfolioDto portfolioDto = generatePortfolioDto(portfolio, portfolioImages);
         return new Response(ExceptionCodeProd.PORTFOLIO_CREATE_OK, portfolioDto);
 
+    }
+
+    private static PortfolioDto generatePortfolioDto(Portfolio portfolio, List<PortfolioImage> portfolioImages) {
+        List<ClipperImageDto> clipperImageDtos = portfolioImages.stream()
+                .map(PortfolioImage::toDto)
+                .collect(Collectors.toList());
+        PortfolioDto portfolioDto = portfolio.toDto();
+        portfolioDto.setClipperImageDtos(clipperImageDtos);
+        return portfolioDto;
     }
 
     private List<PortfolioImage> saveImages(Portfolio portfolio, List<Image> images) {
@@ -86,10 +94,8 @@ public class PortfolioServiceImpl implements PortfolioService {
         Portfolio lastPortfolio = lastPortfolioOptional.get();
         delete(lastPortfolio);
 
-        List<ClipperImageDto> clipperImageDtos = portfolioImages.stream().map(PortfolioImage::toDto).collect(Collectors.toList());
-        PortfolioDto portfolioDto = portfolio.toDto();
-        portfolioDto.setClipperImageDtos(clipperImageDtos);
-        return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolio.toDto());
+        PortfolioDto portfolioDto = generatePortfolioDto(portfolio, portfolioImages);
+        return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolioDto);
 
     }
 

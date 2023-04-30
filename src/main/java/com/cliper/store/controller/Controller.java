@@ -43,7 +43,7 @@ public class Controller {
 
     // 갤러리 업데이트
     @PostMapping("/gallery/update/{galleryId}")
-    public ResponseEntity<Object> updateGallery(@PathVariable("galleryId") int galleryId, @Nullable @RequestPart(value = "data") GallerySaveDto gallerySaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Object> updateGallery(@PathVariable("galleryId") int galleryId, @RequestPart(value = "data") GallerySaveDto gallerySaveDto, @Nullable @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(galleryService.updateGallery(galleryId, gallerySaveDto, multipartFiles), HttpStatus.OK);
     }
 
@@ -61,7 +61,7 @@ public class Controller {
 
     // 갤러리 업데이트
     @PostMapping("/portfolio/update/{portfolioId}")
-    public ResponseEntity<Object> updatePortfolio(@PathVariable("portfolioId") int portfolioId, @Nullable @RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Object> updatePortfolio(@PathVariable("portfolioId") int portfolioId, @RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @Nullable @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(portfolioService.updatePortfolio(portfolioId, portfolioSaveDto, multipartFiles), HttpStatus.OK);
     }
 
