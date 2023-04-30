@@ -4,6 +4,7 @@ import com.cliper.store.dto.GallerySaveDto;
 import com.cliper.store.dto.PortfolioSaveDto;
 import com.cliper.store.service.GalleryService;
 import com.cliper.store.service.PortfolioService;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,56 +25,48 @@ public class Controller {
 
     // 갤러리 조회
     @GetMapping("/gallery")
-    @ResponseBody
     public ResponseEntity<Object> getGallery() {
         return new ResponseEntity<>(galleryService.getGallery(), HttpStatus.OK);
     }
 
     // 포트폴리오 조회
     @GetMapping("/portfolio")
-    @ResponseBody
     public ResponseEntity<Object> getPortfolio() {
         return new ResponseEntity<>(portfolioService.getPortfolio(), HttpStatus.OK);
     }
 
     // 갤러리 생성
     @PostMapping("/gallery/create")
-    @ResponseBody
-    public ResponseEntity<Object> saveGallery(@RequestPart(value = "data") GallerySaveDto gallerySaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Object> saveGallery(@RequestPart(value = "data") GallerySaveDto gallerySaveDto, @Nullable @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(galleryService.saveGallery(gallerySaveDto, multipartFiles), HttpStatus.OK);
     }
 
     // 갤러리 업데이트
     @PostMapping("/gallery/update/{galleryId}")
-    @ResponseBody
-    public ResponseEntity<Object> updateGallery(@PathVariable("galleryId") int galleryId, @RequestPart(value = "data") GallerySaveDto gallerySaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Object> updateGallery(@PathVariable("galleryId") int galleryId, @Nullable @RequestPart(value = "data") GallerySaveDto gallerySaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(galleryService.updateGallery(galleryId, gallerySaveDto, multipartFiles), HttpStatus.OK);
     }
 
     // 갤러리 삭제
     @PostMapping("/gallery/delete/{galleryId}")
-    @ResponseBody
     public ResponseEntity<Object> deleteGallery(@PathVariable("galleryId") int galleryId) {
         return new ResponseEntity<>(galleryService.deleteGallery(galleryId), HttpStatus.OK);
     }
 
     // 포트폴리오 생성
     @PostMapping("/portfolio/create")
-    @ResponseBody
-    public ResponseEntity<Object> savePortfolio(@RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Object> savePortfolio(@RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @Nullable @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(portfolioService.savePortfolio(portfolioSaveDto, multipartFiles), HttpStatus.OK);
     }
 
     // 갤러리 업데이트
     @PostMapping("/portfolio/update/{portfolioId}")
-    @ResponseBody
-    public ResponseEntity<Object> updatePortfolio(@PathVariable("portfolioId") int portfolioId, @RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Object> updatePortfolio(@PathVariable("portfolioId") int portfolioId, @Nullable @RequestPart(value = "data") PortfolioSaveDto portfolioSaveDto, @RequestPart(value = "image") List<MultipartFile> multipartFiles) {
         return new ResponseEntity<>(portfolioService.updatePortfolio(portfolioId, portfolioSaveDto, multipartFiles), HttpStatus.OK);
     }
 
     // 갤러리 삭제
     @PostMapping("/portfolio/delete/{portfolioId}")
-    @ResponseBody
     public ResponseEntity<Object> deletePortfolio(@PathVariable("portfolioId") int portfolioId) {
         return new ResponseEntity<>(portfolioService.deletePortfolio(portfolioId), HttpStatus.OK);
     }

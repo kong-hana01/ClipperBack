@@ -29,7 +29,7 @@ public class ImageHandler {
 
     public List<Image> parseImageInfo(List<MultipartFile> multipartFiles) {
         ArrayList<Image> files = new ArrayList<>();
-        if (multipartFiles.isEmpty()) {
+        if (multipartFiles == null) {
             return files;
         }
         String currentDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
