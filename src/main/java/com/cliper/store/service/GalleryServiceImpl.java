@@ -52,19 +52,18 @@ public class GalleryServiceImpl implements GalleryService {
         List<Image> images = imageHandler.parseImageInfo(files);
         List<GalleryImage> galleryImages = saveImages(gallery, images);
 
-        GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
-        return new Response(ExceptionCodeProd.GALLERY_CREATE_OK, galleryDto);
+        setGalleryImages(gallery, galleryImages);
+        return new Response(ExceptionCodeProd.GALLERY_CREATE_OK, gallery.toDto());
 
     }
 
-    private static GalleryDto generateGallertDto(Gallery gallery, List<GalleryImage> galleryImages) {
+    private void setGalleryImages(Gallery gallery, List<GalleryImage> galleryImages) {
         List<ClipperImageDto> clipperImageDtos = galleryImages.stream()
-                .map(galleryImage -> galleryImage.toDto())
+                .map(GalleryImage::toDto)
                 .collect(Collectors.toList());
         GalleryDto galleryDto = gallery.toDto();
 
         galleryDto.setClipperImageDtos(clipperImageDtos);
-        return galleryDto;
     }
 
     private List<GalleryImage> saveImages(Gallery gallery, List<Image> images) {
@@ -82,23 +81,32 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public Object updateGallery(int galleryId, GallerySaveDto gallerySaveDto, List<MultipartFile> files) {
-        Gallery gallery = gallerySaveDto.toEntity();
+        Gallery newGallery = gallerySaveDto.toEntity();
         Optional<Gallery> lastGalleryOptional = galleryRepository.findById(galleryId);
         if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
 
         List<Image> images = imageHandler.parseImageInfo(files);
-        List<GalleryImage> galleryImages = saveImages(gallery, images);
-        delete(lastGalleryOptional.get());
+        List<GalleryImage> galleryImages = saveImages(newGallery, images);
+        Gallery gallery = lastGalleryOptional.get();
+        deleteImages(gallery);
 
-        GalleryDto galleryDto = generateGallertDto(gallery, galleryImages);
-        return new Response(ExceptionCodeProd.GALLERY_UPDATE_OK, galleryDto);
+        setGallery(newGallery, galleryImages, gallery);
+        return new Response(ExceptionCodeProd.GALLERY_UPDATE_OK, gallery.toDto());
 
     }
 
-    private void delete(Gallery gallery) {
-        gallery.delete();
+    private void setGallery(Gallery newGallery, List<GalleryImage> galleryImages, Gallery gallery) {
+        gallery.setGalleryType(newGallery.getGalleryType());
+        gallery.setTitle(newGallery.getTitle());
+        gallery.setDate(newGallery.getDate());
+        gallery.setContents(newGallery.getContents());
+
+        setGalleryImages(newGallery, galleryImages);
+    }
+
+    private void deleteImages(Gallery gallery) {
         List<Image> imageForDelete = gallery.getGalleryImages()
                 .stream()
                 .map(GalleryImage::getImage)
@@ -112,7 +120,10 @@ public class GalleryServiceImpl implements GalleryService {
         if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
-        delete(lastGalleryOptional.get());
+        Gallery gallery = lastGalleryOptional.get();
+
+        gallery.delete();
+        deleteImages(gallery);
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_DELETE_OK);
     }
 }

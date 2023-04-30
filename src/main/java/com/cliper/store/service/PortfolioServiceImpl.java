@@ -53,18 +53,17 @@ public class PortfolioServiceImpl implements PortfolioService {
         List<Image> images = imageHandler.parseImageInfo(files);
         List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
 
-        PortfolioDto portfolioDto = generatePortfolioDto(portfolio, portfolioImages);
-        return new Response(ExceptionCodeProd.PORTFOLIO_CREATE_OK, portfolioDto);
+        setPortfolioImages(portfolio, portfolioImages);
+        return new Response(ExceptionCodeProd.PORTFOLIO_CREATE_OK, portfolio.toDto());
 
     }
 
-    private static PortfolioDto generatePortfolioDto(Portfolio portfolio, List<PortfolioImage> portfolioImages) {
+    private void setPortfolioImages(Portfolio portfolio, List<PortfolioImage> portfolioImages) {
         List<ClipperImageDto> clipperImageDtos = portfolioImages.stream()
                 .map(PortfolioImage::toDto)
                 .collect(Collectors.toList());
         PortfolioDto portfolioDto = portfolio.toDto();
         portfolioDto.setClipperImageDtos(clipperImageDtos);
-        return portfolioDto;
     }
 
     private List<PortfolioImage> saveImages(Portfolio portfolio, List<Image> images) {
@@ -82,25 +81,34 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public Object updatePortfolio(int portfolioId, PortfolioSaveDto portfolioSaveDto, List<MultipartFile> files) {
-        Portfolio portfolio = portfolioSaveDto.toEntity();
+        Portfolio newPortfolio = portfolioSaveDto.toEntity();
         Optional<Portfolio> lastPortfolioOptional = portfolioRepository.findById(portfolioId);
         if (lastPortfolioOptional.isEmpty() || lastPortfolioOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
 
         List<Image> images = imageHandler.parseImageInfo(files);
-        List<PortfolioImage> portfolioImages = saveImages(portfolio, images);
+        List<PortfolioImage> portfolioImages = saveImages(newPortfolio, images);
 
-        Portfolio lastPortfolio = lastPortfolioOptional.get();
-        delete(lastPortfolio);
+        Portfolio portfolio = lastPortfolioOptional.get();
+        deleteImages(portfolio);
 
-        PortfolioDto portfolioDto = generatePortfolioDto(portfolio, portfolioImages);
-        return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolioDto);
+        setPortfolio(portfolio, newPortfolio, portfolioImages);
+        return new Response(ExceptionCodeProd.PORTFOLIO_UPDATE_OK, portfolio.toDto());
 
     }
 
-    private void delete(Portfolio lastPortfolio) {
-        lastPortfolio.delete();
+    private void setPortfolio(Portfolio portfolio, Portfolio newPortfolio, List<PortfolioImage> portfolioImages) {
+        portfolio.setTitle(newPortfolio.getTitle());
+        portfolio.setContents(newPortfolio.getContents());
+        portfolio.setAgency(newPortfolio.getAgency());
+        portfolio.setIntroduction(newPortfolio.getIntroduction());
+        portfolio.setDate(newPortfolio.getDate());
+
+        setPortfolioImages(portfolio, portfolioImages);
+    }
+
+    private void deleteImages(Portfolio lastPortfolio) {
         List<Image> imageForDelete = lastPortfolio.getPortfolioImages()
                 .stream()
                 .map(PortfolioImage::getImage)
@@ -115,7 +123,8 @@ public class PortfolioServiceImpl implements PortfolioService {
             return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
         Portfolio lastPortfolio = lastPortfolioOptional.get();
-        delete(lastPortfolio);
+        lastPortfolio.delete();
+        deleteImages(lastPortfolio);
         return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_DELETE_OK);
     }
 }
