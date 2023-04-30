@@ -17,16 +17,6 @@ import static com.cliper.store.utils.Paths.RESOURCE_PATH;
 
 public class ImageHandler {
 
-    private static void saveImage(MultipartFile multipartFile, String currentDate, String imageName) {
-        try {
-            String absoluteFilePath = new File(RESOURCE_PATH + "/" + currentDate + "/" + imageName).getAbsolutePath();
-            File file = new File(absoluteFilePath);
-            multipartFile.transferTo(file);
-        } catch (IOException exception) {
-            throw new IllegalArgumentException(INVALID_FILE_SAVE_MESSAGE.getResponseMessage());
-        }
-    }
-
     public List<Image> parseImageInfo(List<MultipartFile> multipartFiles) {
         ArrayList<Image> files = new ArrayList<>();
         if (multipartFiles == null) {
@@ -59,6 +49,16 @@ public class ImageHandler {
         files.get(0).setThumbnail(true);
     }
 
+    private void saveImage(MultipartFile multipartFile, String currentDate, String imageName) {
+        try {
+            String absoluteFilePath = new File(RESOURCE_PATH + "/" + currentDate + "/" + imageName).getAbsolutePath();
+            File file = new File(absoluteFilePath);
+            multipartFile.transferTo(file);
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(INVALID_FILE_SAVE_MESSAGE.getResponseMessage());
+        }
+    }
+
     private String extractImageName(MultipartFile multipartFile) {
         if (!multipartFile.isEmpty()) {
             String contentType = multipartFile.getContentType()
@@ -72,5 +72,16 @@ public class ImageHandler {
     private String extractFileExtension(String contentType) {
         FileExtension matchExtension = FileExtension.findMatchExtension(contentType);
         return matchExtension.getFullExtension();
+    }
+
+    public void deleteImages(List<Image> images) {
+        for (Image image : images) {
+            //실제로 폴더에서 삭제하는 코드 => status로 진행 시 실제로 삭제 안하기에 주석처리
+            String path = new File(RESOURCE_PATH + image.getFileName()).getAbsolutePath();
+            File file = new File(path);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }
 }

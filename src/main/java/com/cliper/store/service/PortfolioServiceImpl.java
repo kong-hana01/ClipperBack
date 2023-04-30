@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class PortfolioServiceImpl implements PortfolioService {
 
     public static final int EXISTS_STATUS = 1;
+
     @Autowired
     private final PortfolioRepository portfolioRepository;
 
@@ -78,13 +79,22 @@ public class PortfolioServiceImpl implements PortfolioService {
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
             saveImages(portfolio, images);
-            Portfolio lastPortfolio = lastPortfolioOptional.get();
-            lastPortfolio.delete();
+            delete(lastPortfolioOptional.get());
+
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
         return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_OK);
+    }
+
+    private void delete(Portfolio lastPortfolio) {
+        lastPortfolio.delete();
+        List<Image> imageForDelete = lastPortfolio.getPortfolioImages()
+                .stream()
+                .map(PortfolioImage::getImage)
+                .collect(Collectors.toList());
+        imageHandler.deleteImages(imageForDelete);
     }
 
     @Override
@@ -93,8 +103,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         if (lastPortfolioOptional.isEmpty() || lastPortfolioOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
-        Portfolio lastPortfolio = lastPortfolioOptional.get();
-        lastPortfolio.delete();
+        delete(lastPortfolioOptional.get());
         return new ResponseEmpty(ExceptionCodeProd.PORTFOLIO_DELETE_OK);
     }
 }

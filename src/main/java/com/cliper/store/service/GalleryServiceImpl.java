@@ -1,8 +1,6 @@
 package com.cliper.store.service;
 
-import com.cliper.store.domain.Gallery;
-import com.cliper.store.domain.GalleryImage;
-import com.cliper.store.domain.Image;
+import com.cliper.store.domain.*;
 import com.cliper.store.dto.GalleryDto;
 import com.cliper.store.dto.GallerySaveDto;
 import com.cliper.store.repository.GalleryImageRepository;
@@ -78,13 +76,21 @@ public class GalleryServiceImpl implements GalleryService {
         try {
             List<Image> images = imageHandler.parseImageInfo(files);
             saveImages(gallery, images);
-            Gallery lastGallery = lastGalleryOptional.get();
-            lastGallery.delete();
+            delete(lastGalleryOptional.get());
         } catch (IllegalArgumentException exception) {
             ResponseMessage responseMessage = ResponseMessage.findByMessage(exception.getMessage());
             return new ResponseEmpty(ExceptionCodeProd.findByResponseMessage(responseMessage));
         }
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_OK);
+    }
+
+    private void delete(Gallery gallery) {
+        gallery.delete();
+        List<Image> imageForDelete = gallery.getGalleryImages()
+                .stream()
+                .map(GalleryImage::getImage)
+                .collect(Collectors.toList());
+        imageHandler.deleteImages(imageForDelete);
     }
 
     @Override
@@ -93,8 +99,7 @@ public class GalleryServiceImpl implements GalleryService {
         if (lastGalleryOptional.isEmpty() || lastGalleryOptional.get().getStatus() == 0) {
             return new ResponseEmpty(ExceptionCodeProd.GALLERY_UPDATE_ERROR_INVALID_MATCH_GALLERY);
         }
-        Gallery lastGallery = lastGalleryOptional.get();
-        lastGallery.delete();
+        delete(lastGalleryOptional.get());
         return new ResponseEmpty(ExceptionCodeProd.GALLERY_DELETE_OK);
     }
 }
